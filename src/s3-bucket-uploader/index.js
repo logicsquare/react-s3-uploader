@@ -10,10 +10,15 @@ class S3BucketUploader {
     S3BucketUploader.config = config;
   }
 
-  static getCreds = url => {
+  static getCreds = (url, authToken=null) => {
     return new Promise(async (resolve, reject) => {
+      let headers = {};
+      if (authToken) {
+        headers["Authorization"] = "Bearer " + authToken;
+      }
       fetch(url, {
-        method: "GET"
+        method: "GET",
+        headers
       })
         .then(res => {
           return res.json();
